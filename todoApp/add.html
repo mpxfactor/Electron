@@ -1,0 +1,78 @@
+<head>
+    <style>
+        *,
+        ::after,
+        ::before {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(40, 40, 40);
+            color: rgb(209, 209, 209);
+            font-family: sans-serif;
+        }
+
+        .main__todo {
+            text-align: center;
+            margin: 1rem;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .main__todo-label {
+            display: block;
+            margin: 1rem 0;
+        }
+        .main__todo-input {
+            display: inline-block;
+            padding: 0.5rem;
+            border-radius: 5px;
+            width: 80%;
+            outline: none;
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-family: sans-serif;
+        }
+
+        .main__todo-submit {
+            display: block;
+            padding: 1rem 5rem;
+            margin: 2rem auto;
+        }
+
+        .main__todo-submit:hover,
+        .main__todo-submit:focus {
+            transform: translateY(-0.5rem);
+        }
+        .main__todo-submit:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <div class="main__todo">
+            <label for="todo" class="main__todo-label">Enter your todo</label>
+            <input id="todo" type="" autofocus class="main__todo-input" />
+        </div>
+        <button type="submit" class="main__todo-submit btn">Add</button>
+    </form>
+
+    <script>
+        const electron = require("electron");
+        const { ipcRenderer } = electron;
+
+        document.querySelector("form").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const { value } = document.querySelector("input");
+            ipcRenderer.send("todo:add", value);
+        });
+    </script>
+</body>

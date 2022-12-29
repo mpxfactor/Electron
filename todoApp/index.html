@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>To Do</title>
+    </head>
+    <style>
+        *,
+        ::after,
+        ::before {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(40, 40, 40);
+            color: rgb(209, 209, 209);
+            font-family: sans-serif;
+            padding: 3rem;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .list-item {
+            font-size: 2rem;
+            font-weight: 400;
+            background-image: linear-gradient(
+                rgb(136, 0, 255),
+                rgb(255, 0, 200)
+            );
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            color: transparent;
+        }
+
+        .list-item::marker {
+            list-style-type: disc;
+            font-size: 2rem;
+            color: rgb(0, 255, 242);
+        }
+
+        .main__list-li:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+    </style>
+    <body>
+        <h1>To Do app</h1>
+        <ul class="main__list"></ul>
+    </body>
+
+    <script>
+        const electron = require("electron");
+        const { ipcRenderer } = electron;
+
+        const ul = document.querySelector("ul");
+
+        ipcRenderer.on("todo:add", (event, todo) => {
+            const li = document.createElement("li");
+            const text = document.createTextNode(todo);
+
+            li.appendChild(text);
+            ul.appendChild(li);
+            li.className = "list-item";
+        });
+
+        ipcRenderer.on("todo:clear", (event, clear) => {
+            ul.innerHTML = "";
+        });
+    </script>
+</html>
